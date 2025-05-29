@@ -161,7 +161,8 @@ export function BeatPlayer({ beat, onGenerateNew, autoPlay = false }: BeatPlayer
         audioRef.current = null;
       };
     }
-  }, [beat.audioUrl, volume]);
+    // Remove volume from dependencies - handle it separately
+  }, [beat.audioUrl]);
 
   useEffect(() => {
     // Update volume

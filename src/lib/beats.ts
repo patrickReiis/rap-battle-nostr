@@ -102,26 +102,6 @@ export const BEAT_SAMPLES: Beat[] = [
   },
   
   // Boom Bap Beats
-  {
-    id: 'boombap_classic_1',
-    name: 'Golden Era',
-    bpm: 95,
-    style: 'Boom Bap',
-    pattern: 'kick-hat-snare-hat',
-    audioUrl: 'https://cdn.pixabay.com/audio/2024/02/09/audio_4d36003605.mp3',
-    producer: 'Pixabay',
-    license: 'Royalty Free'
-  },
-  {
-    id: 'boombap_street_1',
-    name: 'Street Chronicles',
-    bpm: 92,
-    style: 'Boom Bap',
-    pattern: 'kick-kick-snare-hat',
-    audioUrl: 'https://cdn.pixabay.com/audio/2022/10/25/audio_3266b47e86.mp3',
-    producer: 'Pixabay',
-    license: 'Royalty Free'
-  },
 
   // Trap Beats
   {
@@ -134,84 +114,18 @@ export const BEAT_SAMPLES: Beat[] = [
     producer: 'Pixabay',
     license: 'Royalty Free'
   },
-  {
-    id: 'trap_melodic_1',
-    name: 'Night Drive',
-    bpm: 145,
-    style: 'Trap',
-    pattern: 'kick-hat-hat-snare',
-    audioUrl: 'https://cdn.pixabay.com/audio/2023/09/06/audio_c8c8a73467.mp3',
-    producer: 'Pixabay',
-    license: 'Royalty Free'
-  },
 
   // Jazz Hop
-  {
-    id: 'jazzhop_smooth_1',
-    name: 'Blue Note',
-    bpm: 88,
-    style: 'Jazz Hop',
-    pattern: 'kick-hat-snare-hat',
-    audioUrl: 'https://cdn.pixabay.com/audio/2022/02/15/audio_6960b6b7d3.mp3',
-    producer: 'Pixabay',
-    license: 'Royalty Free'
-  },
+  // (Removed external beats)
 
   // Old School
-  {
-    id: 'oldschool_funk_1',
-    name: 'Block Party',
-    bpm: 98,
-    style: 'Old School',
-    pattern: 'kick-snare-kick-kick-snare',
-    audioUrl: 'https://cdn.pixabay.com/audio/2024/01/19/audio_8583de5b2f.mp3',
-    producer: 'Pixabay',
-    license: 'Royalty Free'
-  },
+  // (Removed external beats)
 
   // Experimental
-  {
-    id: 'experimental_glitch_1',
-    name: 'Digital Dreams',
-    bpm: 110,
-    style: 'Experimental',
-    pattern: 'kick-hat-kick-snare',
-    audioUrl: 'https://cdn.pixabay.com/audio/2023/10/30/audio_f1e7479233.mp3',
-    producer: 'Pixabay',
-    license: 'Royalty Free'
-  },
+  // (Removed external beats)
 
   // Additional beats from Free Music Archive and other sources
-  {
-    id: 'westcoast_smooth_1',
-    name: 'Sunset Boulevard',
-    bpm: 93,
-    style: 'West Coast',
-    pattern: 'kick-hat-snare-hat',
-    audioUrl: 'https://cdn.pixabay.com/audio/2023/07/04/audio_0d1a1582f8.mp3',
-    producer: 'Pixabay',
-    license: 'Royalty Free'
-  },
-  {
-    id: 'drill_dark_1',
-    name: 'Midnight Drill',
-    bpm: 142,
-    style: 'Drill',
-    pattern: 'kick-kick-hat-snare-hat-hat',
-    audioUrl: 'https://cdn.pixabay.com/audio/2024/03/14/audio_c128e2bb16.mp3',
-    producer: 'Pixabay',
-    license: 'Royalty Free'
-  },
-  {
-    id: 'cloudrap_ethereal_1',
-    name: 'Floating',
-    bpm: 130,
-    style: 'Cloud Rap',
-    pattern: 'kick-hat-kick-snare',
-    audioUrl: 'https://cdn.pixabay.com/audio/2022/08/25/audio_e7ad2d6e6b.mp3',
-    producer: 'Pixabay',
-    license: 'Royalty Free'
-  }
+  // (Removed external beats)
 ];
 
 // Fallback beat generation for when samples aren't available
