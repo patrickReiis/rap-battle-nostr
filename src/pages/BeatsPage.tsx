@@ -26,7 +26,8 @@ export function BeatsPage() {
 
   const handlePlayBeat = (beat: Beat) => {
     setCurrentBeat(beat);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    // Remove the scroll to top - let user stay where they are
+    // window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const beatCountByStyle = BEAT_STYLES.reduce((acc, style) => {
@@ -64,9 +65,10 @@ export function BeatsPage() {
 
         {/* Current Beat Player */}
         {currentBeat && (
-          <div className="mb-6">
+          <div className="mb-6 sticky top-0 z-10 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 pb-4">
             <BeatPlayer 
               beat={currentBeat} 
+              autoPlay={true}
               onGenerateNew={() => {
                 const otherBeats = filteredBeats.filter(b => b.id !== currentBeat.id);
                 if (otherBeats.length > 0) {

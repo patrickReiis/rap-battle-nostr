@@ -11,6 +11,41 @@ export interface Beat {
   license?: string;
 }
 
+// Configuration for beat loading
+export const BEAT_CONFIG = {
+  // Set to false to disable external audio URLs and use only synthesized beats
+  useExternalAudio: true, // Enabled to use local audio files
+  
+  // CORS proxy URL (uncomment and modify if needed)
+  corsProxy: undefined as string | undefined,
+  // corsProxy: 'https://cors-anywhere.herokuapp.com/',
+  
+  // Fallback to synthesized beats on error
+  fallbackToSynthesized: true,
+  
+  // Local beats directory (relative to public folder)
+  localBeatsPath: '/beats/',
+};
+
+// Helper function to process audio URLs
+export function processAudioUrl(url?: string): string | undefined {
+  if (!url || !BEAT_CONFIG.useExternalAudio) return undefined;
+  
+  // If using CORS proxy
+  if (BEAT_CONFIG.corsProxy) {
+    return BEAT_CONFIG.corsProxy + url;
+  }
+  
+  return url;
+}
+
+// If you're getting CORS errors with external audio, you have several options:
+// 1. Host the audio files locally in the /public folder
+// 2. Use a CORS proxy service (e.g., https://cors-anywhere.herokuapp.com/)
+// 3. Set USE_EXTERNAL_AUDIO to false to use only synthesized beats
+// 4. Configure your own backend to proxy the audio files
+// 5. Use audio URLs from services that allow cross-origin requests
+
 export const BEAT_STYLES = [
   'Boom Bap',
   'Trap',
@@ -36,17 +71,25 @@ export const BEAT_PATTERNS = [
 // Free beat samples from various sources
 // These are royalty-free beats suitable for non-commercial use
 export const BEAT_SAMPLES: Beat[] = [
-  // Lo-Fi Beats
+  // Local beats
   {
-    id: 'lofi_chill_1',
-    name: 'Midnight Coffee',
-    bpm: 85,
-    style: 'Lo-Fi',
+    id: 'local_freestyle_boom_bap',
+    name: 'Behind Barz - Freestyle Rap Beat',
+    bpm: 90, // Typical boom bap BPM, adjust if needed
+    style: 'Boom Bap',
     pattern: 'kick-hat-snare-hat',
-    audioUrl: 'https://cdn.pixabay.com/audio/2022/10/10/audio_5d82327c2f.mp3',
-    producer: 'Pixabay',
-    license: 'Royalty Free'
+    audioUrl: '/beats/Freestyle Rap Beat Hard Boom Bap Type Beat Hip Hop Instrumental Behind Barz.mp3',
+    producer: 'Behind Barz',
+    license: 'Personal Use'
   },
+  
+  // External beats (may encounter CORS issues)
+  // To fix CORS issues:
+  // 1. Download these beats and host them locally in /public/beats/
+  // 2. Or set BEAT_CONFIG.useExternalAudio = false to use only synthesized beats
+  // 3. Or configure a CORS proxy in BEAT_CONFIG.corsProxy
+  
+  // Lo-Fi Beats
   {
     id: 'lofi_study_1',
     name: 'Study Session',
@@ -176,7 +219,12 @@ export function generateRandomBeat(): Beat {
   // First try to get a random sample beat
   if (BEAT_SAMPLES.length > 0) {
     const randomIndex = Math.floor(Math.random() * BEAT_SAMPLES.length);
-    return BEAT_SAMPLES[randomIndex];
+    const beat = { ...BEAT_SAMPLES[randomIndex] };
+    // Process the audio URL through our helper
+    if (beat.audioUrl) {
+      beat.audioUrl = processAudioUrl(beat.audioUrl);
+    }
+    return beat;
   }
   
   // Fallback to generated beat
@@ -195,6 +243,8 @@ export function generateRandomBeat(): Beat {
     bpm: randomBpm,
     style: randomStyle,
     pattern: randomPattern,
+    producer: 'Synthesized',
+    license: 'Open Source'
   };
 }
 

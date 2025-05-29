@@ -44,7 +44,7 @@ export function useBattleRooms() {
         { signal }
       ) : [];
 
-      const metadataMap = new Map<string, any>();
+      const metadataMap = new Map<string, { name?: string; display_name?: string }>();
       metadataEvents.forEach(event => {
         try {
           const metadata = JSON.parse(event.content);

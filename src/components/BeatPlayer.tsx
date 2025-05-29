@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useCallback } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Play, Pause, RotateCcw, Volume2, Download, ExternalLink } from 'lucide-react';
@@ -10,9 +10,10 @@ import { Badge } from '@/components/ui/badge';
 interface BeatPlayerProps {
   beat: Beat;
   onGenerateNew?: () => void;
+  autoPlay?: boolean;
 }
 
-export function BeatPlayer({ beat, onGenerateNew }: BeatPlayerProps) {
+export function BeatPlayer({ beat, onGenerateNew, autoPlay = false }: BeatPlayerProps) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [volume, setVolume] = useState(0.7);
   const [currentTime, setCurrentTime] = useState(0);
@@ -26,65 +27,10 @@ export function BeatPlayer({ beat, onGenerateNew }: BeatPlayerProps) {
   const nextNoteTimeRef = useRef(0);
   const currentNoteRef = useRef(0);
 
-  useEffect(() => {
-    // Create audio element if beat has URL
-    if (beat.audioUrl) {
-      const audio = new Audio();
-      audio.crossOrigin = 'anonymous';
-      audio.loop = true;
-      audio.volume = volume;
-      
-      audio.addEventListener('loadstart', () => setIsLoading(true));
-      audio.addEventListener('canplay', () => {
-        setIsLoading(false);
-        setError(null);
-      });
-      audio.addEventListener('error', (e) => {
-        console.error('Audio loading error:', e);
-        setError('Failed to load beat. Using synthesized version.');
-        setIsLoading(false);
-      });
-      audio.addEventListener('loadedmetadata', () => {
-        setDuration(audio.duration);
-      });
-      audio.addEventListener('timeupdate', () => {
-        setCurrentTime(audio.currentTime);
-      });
-      
-      audio.src = beat.audioUrl;
-      audioRef.current = audio;
-      
-      return () => {
-        audio.pause();
-        audio.src = '';
-        audioRef.current = null;
-      };
-    }
-  }, [beat.audioUrl, volume]);
-
-  useEffect(() => {
-    // Update volume
-    if (audioRef.current) {
-      audioRef.current.volume = volume;
-    }
-  }, [volume]);
-
-  useEffect(() => {
-    return () => {
-      stopBeat();
-    };
-  }, []);
-
-  useEffect(() => {
-    // Reset when beat changes
-    stopBeat();
-    setCurrentTime(0);
-    setError(null);
-  }, [beat.id]);
-
+  // Define functions before effects
   const initAudioContext = () => {
     if (!audioContextRef.current) {
-      audioContextRef.current = new (window.AudioContext || (window as any).webkitAudioContext)();
+      audioContextRef.current = new (window.AudioContext || (window as typeof window & { webkitAudioContext?: typeof AudioContext }).webkitAudioContext)();
     }
     return audioContextRef.current;
   };
@@ -150,6 +96,19 @@ export function BeatPlayer({ beat, onGenerateNew }: BeatPlayerProps) {
     }, 25);
   };
 
+  const stopBeat = () => {
+    if (audioRef.current) {
+      audioRef.current.pause();
+    }
+    
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+      intervalRef.current = null;
+    }
+    
+    setIsPlaying(false);
+  };
+
   const startBeat = async () => {
     if (beat.audioUrl && audioRef.current && !error) {
       try {
@@ -168,18 +127,71 @@ export function BeatPlayer({ beat, onGenerateNew }: BeatPlayerProps) {
     }
   };
 
-  const stopBeat = () => {
+  useEffect(() => {
+    // Create audio element if beat has URL
+    if (beat.audioUrl) {
+      const audio = new Audio();
+      audio.crossOrigin = 'anonymous';
+      audio.loop = true;
+      audio.volume = volume;
+      
+      audio.addEventListener('loadstart', () => setIsLoading(true));
+      audio.addEventListener('canplay', () => {
+        setIsLoading(false);
+        setError(null);
+      });
+      audio.addEventListener('error', (e) => {
+        console.error('Audio loading error:', e);
+        setError('Failed to load beat. Using synthesized version.');
+        setIsLoading(false);
+      });
+      audio.addEventListener('loadedmetadata', () => {
+        setDuration(audio.duration);
+      });
+      audio.addEventListener('timeupdate', () => {
+        setCurrentTime(audio.currentTime);
+      });
+      
+      audio.src = beat.audioUrl;
+      audioRef.current = audio;
+      
+      return () => {
+        audio.pause();
+        audio.src = '';
+        audioRef.current = null;
+      };
+    }
+  }, [beat.audioUrl, volume]);
+
+  useEffect(() => {
+    // Update volume
     if (audioRef.current) {
-      audioRef.current.pause();
+      audioRef.current.volume = volume;
     }
+  }, [volume]);
+
+  useEffect(() => {
+    return () => {
+      stopBeat();
+    };
+  }, []);
+
+  useEffect(() => {
+    // Reset when beat changes
+    stopBeat();
+    setCurrentTime(0);
+    setError(null);
     
-    if (intervalRef.current) {
-      clearInterval(intervalRef.current);
-      intervalRef.current = null;
+    // Auto-play if requested
+    if (autoPlay) {
+      // Small delay to ensure audio is loaded
+      const timer = setTimeout(() => {
+        startBeat();
+      }, 100);
+      return () => clearTimeout(timer);
     }
-    
-    setIsPlaying(false);
-  };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [beat.id, autoPlay]);
 
   const togglePlayback = () => {
     if (isPlaying) {
