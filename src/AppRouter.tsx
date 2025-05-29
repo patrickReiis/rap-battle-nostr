@@ -1,13 +1,23 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
-import Index from "./pages/Index";
+import { HomePage } from '@/pages/HomePage';
+import { PracticePage } from '@/pages/PracticePage';
+import { BattlesPage } from '@/pages/BattlesPage';
+import { BattleRoomPage } from '@/pages/BattleRoomPage';
+import { LeaderboardPage } from '@/pages/LeaderboardPage';
+import { BeatsPage } from '@/pages/BeatsPage';
 import NotFound from "./pages/NotFound";
 
 export function AppRouter() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Index />} />
+        <Route path="/" element={<HomePage />} />
+        <Route path="/practice" element={<PracticePage />} />
+        <Route path="/battles" element={<BattlesPage />} />
+        <Route path="/battle/:roomId" element={<BattleRoomPage />} />
+        <Route path="/leaderboard" element={<LeaderboardPage />} />
+        <Route path="/beats" element={<BeatsPage />} />
         {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
         <Route path="*" element={<NotFound />} />
       </Routes>
