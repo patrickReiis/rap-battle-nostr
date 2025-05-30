@@ -1,26 +1,25 @@
-import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Mic, Music, Users, Trophy } from 'lucide-react';
+import { Mic, Music, Trophy } from 'lucide-react';
 import { LoginArea } from '@/components/auth/LoginArea';
 
 export function HomePage() {
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="flex justify-between items-center mb-8">
-        <h1 className="text-4xl font-bold">Nostr Rap Battles</h1>
+        <h1 className="text-4xl font-bold">Nostr Rap Studio</h1>
         <LoginArea />
       </div>
 
       <div className="text-center mb-12">
-        <h2 className="text-2xl font-semibold mb-4">Battle with Random Beats on Nostr</h2>
+        <h2 className="text-2xl font-semibold mb-4">Practice Freestyling with Random Beats</h2>
         <p className="text-muted-foreground max-w-2xl mx-auto">
-          Generate random beats, drop your bars, and compete with other rappers in the decentralized rap battle arena.
+          Generate random beats, practice your freestyle skills, and share your best raps on Nostr.
         </p>
       </div>
 
-      <div className="grid md:grid-cols-2 gap-6 mb-12">
+      <div className="grid md:grid-cols-1 gap-6 mb-12">
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
@@ -39,25 +38,6 @@ export function HomePage() {
             </Link>
           </CardContent>
         </Card>
-
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Users className="h-5 w-5" />
-              Live Battles
-            </CardTitle>
-            <CardDescription>
-              Join or create a rap battle room and compete with others
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <Link to="/battles">
-              <Button className="w-full" size="lg" variant="secondary">
-                Enter Battle Arena
-              </Button>
-            </Link>
-          </CardContent>
-        </Card>
       </div>
 
       <div className="grid md:grid-cols-3 gap-4">
@@ -71,9 +51,9 @@ export function HomePage() {
           <CardContent>
             <ul className="space-y-2 text-sm">
               <li>• Generate a random beat</li>
-              <li>• Write your bars to the beat</li>
-              <li>• Post your rap on Nostr</li>
-              <li>• Vote for the best rapper</li>
+              <li>• Practice your freestyle skills</li>
+              <li>• Write and record your bars</li>
+              <li>• Share your raps on Nostr</li>
             </ul>
           </CardContent>
         </Card>
